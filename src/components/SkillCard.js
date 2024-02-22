@@ -1,4 +1,5 @@
 const SkillCard = ({ customStyle, skill }) => {
+  // debugger
   const defaultStyles = {
     // width: 148px)
     height: "40px",
