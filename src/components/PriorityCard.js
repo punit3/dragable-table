@@ -1,6 +1,7 @@
 import React from "react";
 
-const PriorityCard = ({ customStyle, skill }) => {
+const PriorityCard = ({ customStyle, skill,handleDelete ,index}) => {
+  // console.log("skill",skill)
   // Default styles for the PriorityCard component
   const defaultStyles = {
     width: '266px',
@@ -34,13 +35,17 @@ const PriorityCard = ({ customStyle, skill }) => {
   const mergedStyles = { ...defaultStyles, ...customStyle };
 
   // Truncate the skill text and display the PriorityCard
-  const truncatedText = truncateLongWords(skill);
+  const truncatedText = truncateLongWords(skill.value);
+
+  const handleUpdate=()=>{
+      handleDelete(skill,index)
+  }
 
   return (
     <div style={{ display: 'flex', justifyContent: 'end' }}>
       <div style={mergedStyles}>
         {truncatedText}
-        <img src="/images/cross.svg" alt="cross-icon" />
+        <img src="/images/cross.svg" alt="cross-icon" onClick={handleUpdate}/>
       </div>
     </div>
   );

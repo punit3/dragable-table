@@ -4,11 +4,11 @@ export const skills = [
       {
         skillName: "Core",
         skill: [
-          "Finance & Entrepreneurship",
-          "Maths",
-          "Commerce",
-          "Science",
-          "Language & communication",
+          { value: "Finance & Entrepreneurship", name: "Core" },
+          { value: "Maths", name: "Core" },
+          { value: "Commerce", name: "Core" },
+          { value: "Science", name: "Core" },
+          { value: "Language & communication", name: "Core" },
         ],
         id: 0,
         borderColor: "#71CA00",
@@ -17,14 +17,23 @@ export const skills = [
       {
         skillName: "Special",
         id: 1,
-        skill: ["Space Tech", "Robotics", "Electronics"],
+        skill: [
+          { value: "Space Tech", name: "Special" },
+          { value: "Robotics", name: "Special" },
+          { value: "Electronics", name: "Special" }],
         borderColor: "#F85858",
         backgroundColor: "#FEEBEB",
       },
       {
         skillName: "Creative",
         id: 2,
-        skill: ["Graphic Novel", "Yoga", "Music", "Dance", "Guitar"],
+        skill: [
+          { value: "Graphic Novel", name: "Creative" },
+          { value: "Yoga", name: "Creative" },
+          { value: "Music", name: "Creative" },
+          { value: "Dance", name: "Creative" },
+          { value: "Guitar", name: "Creative" },
+        ],
         borderColor: "#DF45E2",
         backgroundColor: "#FDE7FD",
       },
@@ -35,11 +44,11 @@ export const skills = [
       {
         skillName: "School",
         skill: [
-          "Language & Communicationssss",
-          "Robotics",
-          "Maths",
-         
-          "Graphic Novel",
+          { value: "Language & Communicationssss", name: "Core" },
+          { value: "Robotics", name: "Creative" },
+          { value: "Maths", name: "Core" },
+          { value: "Graphic Novel2", name: "Creative" },
+          
         ],
         id: 1,
         borderColor: "#71CA00",
@@ -49,18 +58,16 @@ export const skills = [
         skillName: "Home",
         id: 2,
         skill: [
-          "Language & Communicationssss",
-          "Robotics",
-          "Maths",
-         
-          "Graphic Novel",
+          { value: "Science", name: "Core" },
+          { value: "Yoga", name: "Creative" },
+          { value: "Space Tech", name: "Special" },
+          { value: "Dance", name: "Creative" },
         ],
         borderColor: "#F85858",
         backgroundColor: "#FEEBEB",
       },
-      
     ],
-  }
+  },
 ];
 
 export const priority = [

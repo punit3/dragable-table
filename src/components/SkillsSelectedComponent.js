@@ -3,6 +3,7 @@ import CustomizableComponent from "./CustomizableComponent";
 import CustomizableContentComponent from "./CutomizableContentComponent";
 import SkillCard from "./SkillCard";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { getSkillStyles } from "../utils.js/styleGenerator";
 
 const innerBlockStyles = {
   width: "480px",
@@ -20,49 +21,12 @@ const innerBlockStyles = {
 
 const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
   // The rest of your code for handling drag-and-drop
-  const onDragEnd = (result, columns,updateSkillData) => {
-    debugger;
-    if (!result.destination) return;
-    const { source, destination } = result;
-  
-    if (source.droppableId !== destination.droppableId) {
-      const sourceColumn = columns[source.droppableId];
-      const destColumn = columns[destination.droppableId];
-      const sourceItems = [...sourceColumn.skill];
-      const destItems = [...destColumn.skill];
-      const [removed] = sourceItems.splice(source.index, 1);
-      destItems.splice(destination.index, 0, removed);
-      updateSkillData({
-        ...columns,
-        [source.droppableId]: {
-          ...sourceColumn,
-          skill: sourceItems,
-        },
-        [destination.droppableId]: {
-          ...destColumn,
-          skill: destItems,
-        },
-      });
-    } else {
-      const column = columns[source.droppableId];
-      const copiedItems = [...column.skill];
-      const [removed] = copiedItems.splice(source.index, 1);
-      copiedItems.splice(destination.index, 0, removed);
-      updateSkillData({
-        ...columns,
-        [source.droppableId]: {
-          ...column,
-          skill: copiedItems,
-        },
-      });
-    }
-  };
-
+  console.log("NEW",skillData[0])
   return (
     <div className="inner-middle-container">
-      <DragDropContext
+      {/* <DragDropContext
         onDragEnd={(result) => onDragEnd(result, skillData, updateSkillData)}
-      >
+      > */}
         <CustomizableComponent headerText="Skills Selected">
           <div className="inner-middle-container-body">
             {/* Customizable content component for "Core" skills */}
@@ -71,7 +35,7 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
               headerText="Core"
               level="(Level 0)"
             >
-              <Droppable droppableId={skillData[0].id} key={skillData[0].name}>
+              <Droppable droppableId={"skills "+skillData[0].skillName} key={skillData[0].id}>
               {(provided, snapshot) => {
                       return (
                         <div
@@ -79,16 +43,16 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
                           ref={provided.innerRef}
                           style={{
                             ...innerBlockStyles,
-                            ...{ height: "112px" },
+                            // ...{ height: "180px" },
                           }}
                         >
                           {skillData[0].skill.map((item, index) => {
                             // debugger;
                             return (
                               <Draggable
-                                key={item}
-                                draggableId={item}
-                                index={index}
+                                key={item.value}
+                                draggableId={`${item.value} ${item.name}${index}`}
+                                index={index*1}
                               >
                                 {(provided, snapshot) => {
                                   return (
@@ -98,12 +62,9 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
                                       {...provided.dragHandleProps}
                                     >
                                       <SkillCard
-                                        key={item}
-                                        skill={item}
-                                        // customStyle={{
-                                        //   background: skills[1].backgroundColor,
-                                        //   borderColor: skills[1].borderColor,
-                                        // }}
+                                        key={item.value}
+                                        skill={item.value}
+                                        customStyle={getSkillStyles(item.name)}
                                       />
                                     </div>
                                   );
@@ -124,7 +85,7 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
               headerText="Special"
               level="(Level 0)"
             >
-              <Droppable droppableId={skillData[1].id} key={skillData[1]}>
+              <Droppable droppableId={"skills "+skillData[1].skillName} key={skillData[1].id}>
               {(provided, snapshot) => {
                       return (
                         <div
@@ -139,9 +100,9 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
                             // debugger;
                             return (
                               <Draggable
-                                key={item}
-                                draggableId={item}
-                                index={index}
+                                key={item.value}
+                                draggableId={`${item.value} ${item.name}${index}`}
+                                index={index*2}
                               >
                                 {(provided, snapshot) => {
                                   return (
@@ -151,12 +112,9 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
                                       {...provided.dragHandleProps}
                                     >
                                       <SkillCard
-                                        key={item}
-                                        skill={item}
-                                        // customStyle={{
-                                        //   background: skills[1].backgroundColor,
-                                        //   borderColor: skills[1].borderColor,
-                                        // }}
+                                        key={item.value}
+                                        skill={item.value}
+                                        customStyle={getSkillStyles(item.name)}
                                       />
                                     </div>
                                   );
@@ -177,7 +135,7 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
               headerText="Creative"
               level="(Level 0)"
             >
-              <Droppable droppableId={skillData[2].id} key={skillData[2]}>
+              <Droppable droppableId={"skills "+skillData[2].skillName} key={skillData[2].id}>
               {(provided, snapshot) => {
                       return (
                         <div
@@ -192,9 +150,9 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
                             // debugger;
                             return (
                               <Draggable
-                                key={item}
-                                draggableId={item}
-                                index={index}
+                                key={item.value}
+                                draggableId={`${item.value} ${item.name}${index}`}
+                                index={index*3}
                               >
                                 {(provided, snapshot) => {
                                   return (
@@ -204,12 +162,9 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
                                       {...provided.dragHandleProps}
                                     >
                                       <SkillCard
-                                        key={item}
-                                        skill={item}
-                                        // customStyle={{
-                                        //   background: skills[1].backgroundColor,
-                                        //   borderColor: skills[1].borderColor,
-                                        // }}
+                                        key={item.value}
+                                        skill={item.value}
+                                        customStyle={getSkillStyles(item.name)}
                                       />
                                     </div>
                                   );
@@ -225,7 +180,7 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
             </CustomizableContentComponent>
           </div>
         </CustomizableComponent>
-      </DragDropContext>
+      {/* </DragDropContext> */}
     </div>
   );
 };
