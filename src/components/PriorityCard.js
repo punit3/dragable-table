@@ -15,6 +15,7 @@ const PriorityCard = ({ customStyle, skill,handleDelete ,index}) => {
     alignItems: "center",
     justifyContent: "space-between",
     boxSizing: "border-box",
+    cursor:'pointer'
   };
 
   // Function to truncate long words in the skill text

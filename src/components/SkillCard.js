@@ -12,6 +12,7 @@ const SkillCard = ({ customStyle, skill }) => {
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box",
+    cursor:"pointer"
   };
   const mergedStyles = { ...defaultStyles, ...customStyle };
   return <div style={mergedStyles}>{skill}</div>;

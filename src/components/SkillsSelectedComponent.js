@@ -6,181 +6,76 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { getSkillStyles } from "../utils.js/styleGenerator";
 
 const innerBlockStyles = {
-  width: "480px",
-  height: "256px",
+  width: "100%", // Adjusted to full width
+  height: "100%", // Adjusted to full height
   padding: "12px",
   borderRadius: "8px",
   display: "flex",
   gap: "8px",
   background: "white",
-  boxSizing: "border-box",
+  boxSizing: "border-box", // Added to include padding and border in the element's total width and height
   flexWrap: "wrap",
   alignContent: "baseline",
 };
 
+const skillCategories = [
+  { id: 0, name: "Core", height: "256px" },
+  { id: 1, name: "Special", height: "112px" },
+  { id: 2, name: "Creative", height: "160px" },
+];
 
 const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
-  // The rest of your code for handling drag-and-drop
-  console.log("NEW",skillData[0])
   return (
     <div className="inner-middle-container">
-      {/* <DragDropContext
-        onDragEnd={(result) => onDragEnd(result, skillData, updateSkillData)}
-      > */}
-        <CustomizableComponent headerText="Skills Selected">
-          <div className="inner-middle-container-body">
-            {/* Customizable content component for "Core" skills */}
+      <CustomizableComponent headerText="Skills Selected">
+        <div className="inner-middle-container-body">
+          {skillCategories.map((category) => (
             <CustomizableContentComponent
-              customStyle={{ height: "276px" }}
-              headerText="Core"
+              key={category.id}
+              // customStyle={{ height: category.height }}
+              headerText={category.name}
               level="(Level 0)"
             >
-              <Droppable droppableId={"skills "+skillData[0].skillName} key={skillData[0].id}>
-              {(provided, snapshot) => {
-                      return (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                          style={{
-                            ...innerBlockStyles,
-                            // ...{ height: "180px" },
-                          }}
-                        >
-                          {skillData[0].skill.map((item, index) => {
-                            // debugger;
-                            return (
-                              <Draggable
-                                key={item.value}
-                                draggableId={`${item.value} ${item.name}${index}`}
-                                index={index*1}
-                              >
-                                {(provided, snapshot) => {
-                                  return (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                    >
-                                      <SkillCard
-                                        key={item.value}
-                                        skill={item.value}
-                                        customStyle={getSkillStyles(item.name)}
-                                      />
-                                    </div>
-                                  );
-                                }}
-                              </Draggable>
-                            );
-                          })}
-                          {provided.placeholder}
-                        </div>
-                      );
+              <Droppable droppableId={`skills ${category.name}`} key={category.id}>
+                {(provided, snapshot) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={{
+                      ...innerBlockStyles,
+                      height: category.height,
                     }}
+                  >
+                    {skillData[category.id].skill.map((item, index) => (
+                      <Draggable
+                        key={item.value}
+                        draggableId={`${item.value} ${item.name}${index}`}
+                        index={index + category.id * 10}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <SkillCard
+                              key={item.value}
+                              skill={item.value}
+                              customStyle={getSkillStyles(item.name)}
+                              style={{ boxSizing: "border-box" }} // Added to include padding and border in the element's total width and height
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
               </Droppable>
             </CustomizableContentComponent>
-
-            {/* Customizable content component for "Special" skills */}
-            <CustomizableContentComponent
-              customStyle={{ height: "132px" }}
-              headerText="Special"
-              level="(Level 0)"
-            >
-              <Droppable droppableId={"skills "+skillData[1].skillName} key={skillData[1].id}>
-              {(provided, snapshot) => {
-                      return (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                          style={{
-                            ...innerBlockStyles,
-                            ...{ height: "112px" },
-                          }}
-                        >
-                          {skillData[1].skill.map((item, index) => {
-                            // debugger;
-                            return (
-                              <Draggable
-                                key={item.value}
-                                draggableId={`${item.value} ${item.name}${index}`}
-                                index={index*2}
-                              >
-                                {(provided, snapshot) => {
-                                  return (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                    >
-                                      <SkillCard
-                                        key={item.value}
-                                        skill={item.value}
-                                        customStyle={getSkillStyles(item.name)}
-                                      />
-                                    </div>
-                                  );
-                                }}
-                              </Draggable>
-                            );
-                          })}
-                          {provided.placeholder}
-                        </div>
-                      );
-                    }}
-              </Droppable>
-            </CustomizableContentComponent>
-
-            {/* Customizable content component for "Creative" skills */}
-            <CustomizableContentComponent
-              customStyle={{ height: "180px" }}
-              headerText="Creative"
-              level="(Level 0)"
-            >
-              <Droppable droppableId={"skills "+skillData[2].skillName} key={skillData[2].id}>
-              {(provided, snapshot) => {
-                      return (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                          style={{
-                            ...innerBlockStyles,
-                            ...{ height: "160px" },
-                          }}
-                        >
-                          {skillData[2].skill.map((item, index) => {
-                            // debugger;
-                            return (
-                              <Draggable
-                                key={item.value}
-                                draggableId={`${item.value} ${item.name}${index}`}
-                                index={index*3}
-                              >
-                                {(provided, snapshot) => {
-                                  return (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                    >
-                                      <SkillCard
-                                        key={item.value}
-                                        skill={item.value}
-                                        customStyle={getSkillStyles(item.name)}
-                                      />
-                                    </div>
-                                  );
-                                }}
-                              </Draggable>
-                            );
-                          })}
-                          {provided.placeholder}
-                        </div>
-                      );
-                    }}
-              </Droppable>
-            </CustomizableContentComponent>
-          </div>
-        </CustomizableComponent>
-      {/* </DragDropContext> */}
+          ))}
+        </div>
+      </CustomizableComponent>
     </div>
   );
 };

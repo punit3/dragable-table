@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import SkillsSelectedComponent from "../components/SkillsSelectedComponent";
 import SetSkillPriorityComponent from "../components/SetSkillPriorityComponent";
 import SchoolLevelComponent from "../components/SchoolLevelComponent";
-import { skills, priority } from "../data";
+import { skills} from "../data";
 import "../styles/home.css";
 import "../styles/drag.css";
 import { DragDropContext } from "react-beautiful-dnd";
-import { handlePriorityDrag, handleSkillDrag, moveSkillToPriority } from "../utils.js/updateData";
+import { handleSkillDrag, moveSkillToPriority } from "../utils.js/updateData";
 
 const Home = () => {
-  console.log("---AAAA", skills[1]);
+ 
   const [skillData, updateSkillData] = useState(skills[0].skillOptions);
   const [priorityData, updatePriorityData] = useState(
     skills[1].priorityOptions
@@ -17,7 +17,7 @@ const Home = () => {
   const onDragEnd = (result, skill_Data, priority_Data, updateSkillData) => {
     // debugger;
     let droppableId=result.destination
-    console.log("--id",droppableId)
+   
     if(droppableId===null){
       return
     }
@@ -28,7 +28,7 @@ const Home = () => {
     const destinationList = result.destination.droppableId.split(" ").pop();
     const itemToUpdate = result.draggableId.split(" ").slice(0, -1).join(" ");
     
-    // debugger;
+    
     if (destinationKeyword == "skills" && sourceKeyword == "skills") {
       // const sourceSkillName = sourceList;
       // const destinationSkillName = destinationList;
@@ -50,8 +50,9 @@ const Home = () => {
       sourceKeyword == "priority"
     ) {
       let destinationSkill=result.draggableId.split(" ").pop()
+      const item = result.draggableId.split(" ").slice(0, -2).join(" ");
       const itemToAdd = {
-        value: itemToUpdate,
+        value: item,
         name: destinationSkill,
       };
       const updatedPriorityData = handleSkillDrag(
@@ -72,7 +73,7 @@ const Home = () => {
         value: itemToUpdate,
         name:sourceList, // Assuming the name for priority skills is "Priority"
       };
-
+      debugger
       const { updatedSkillData, updatedPriorityData } = moveSkillToPriority(
         skillData,
         priorityData,

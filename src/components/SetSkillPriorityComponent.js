@@ -2,7 +2,6 @@ import React from "react";
 import CustomizableComponent from "./CustomizableComponent";
 import PriorityComponent from "./PriorityComponent";
 import PriorityCard from "./PriorityCard";
-import { priority } from "../data";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { getSkillStyles } from "../utils.js/styleGenerator";
 
@@ -12,8 +11,6 @@ const SetSkillPriorityComponent = ({
   updatePriorityData,
   updateSkillData,
 }) => {
-  console.log("skill---",skillData)
-  console.log("prioirityData",priorityData)
   const priorityBlockStyles = {
     background: "white",
     display: "flex",
@@ -23,128 +20,73 @@ const SetSkillPriorityComponent = ({
     gap: "12px",
   };
 
-  const handleUpdate=(value,indexToupdate)=>{
+  const handleUpdate = (value, indexToUpdate) => {
+    const updatedSkillData = skillData.map((item) => (
+      item.skillName === value.name
+        ? { ...item, skill: [...item.skill, value] }
+        : { ...item }
+    ));
 
-    console.log(skillData)
-    let skill_data=skillData.map((item)=>{
-      
-      if(item.skillName==value.name){
-        return {
-          ...item,
-          skill:[...item.skill,value]
-        }
-      }else{
-        return {...item}
-      }
-    })
-    const prioirity_data = priorityData.map((item, index) => {
-      debugger
-      if (index === indexToupdate) {
-        console.log("xxx", index);
-        // Update the specific object at the desired index
-        return {
-          ...item,
-          skill: item.skill.filter((x) => x.value !== value.value),
-        };
-      }
-      return item;
-    });
+    const updatedPriorityData = priorityData.map((item, index) => (
+      index === indexToUpdate
+        ? { ...item, skill: item.skill.filter((x) => x.value !== value.value) }
+        : item
+    ));
 
-// debugger
-// console.log("skillName",updatedPriorityData)
-    updateSkillData([...skill_data])
-    updatePriorityData([...prioirity_data])
-    
-    // debugger
+    updateSkillData([...updatedSkillData]);
+    updatePriorityData([...updatedPriorityData]);
+  };
 
-  }
-
-  console.log("---prio", priorityData);
   return (
     <div className="inner-right-container">
       <CustomizableComponent headerText="Set Skill Priority">
         <div className="inner-right-container-body">
-          {/* Priority component for "School Priority" */}
-          <PriorityComponent headerText="School Priority" level="(Level 0)">
-            <Droppable droppableId={"priority "+priorityData[0].skillName} key={priorityData[0].skillName}>
-              {(provided, snapshot) => {
-                return (
+          {/* Loop through priorityData to render PriorityComponents */}
+          {priorityData.map((priority, index) => (
+            <PriorityComponent
+              key={priority.skillName}
+              headerText={priority.skillName}
+              level="(Level 0)"
+            >
+              <Droppable
+                droppableId={`priority ${priority.skillName}`}
+                key={priority.skillName}
+              >
+                {(provided, snapshot) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     style={priorityBlockStyles}
                   >
-                    {priorityData[0].skill.map((item, index) => (
+                    {/* Loop through priority.skill to render PriorityCards */}
+                    {priority.skill.map((item, itemIndex) => (
                       <Draggable
                         key={item.value}
-                        draggableId={`${item.value} ${index} ${item.name}`}
-                        index={index}
+                        draggableId={`${item.value} ${itemIndex} ${item.name}`}
+                        index={itemIndex}
                       >
-                        {(provided, snapshot) => {
-                          return (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <PriorityCard
-                                key={item.value}
-                                skill={item}
-                                index={0}
-                                handleDelete={handleUpdate}
-                                customStyle={getSkillStyles(item.name)}
-                              />
-                            </div>
-                          );
-                        }}
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <PriorityCard
+                              key={item.value}
+                              skill={item}
+                              index={index}
+                              handleDelete={() => handleUpdate(item, index)}
+                              customStyle={getSkillStyles(item.name)}
+                            />
+                          </div>
+                        )}
                       </Draggable>
                     ))}
                   </div>
-                );
-              }}
-            </Droppable>
-          </PriorityComponent>
-
-          {/* Priority component for "Home Priority" */}
-          <PriorityComponent headerText="Home Priority" level="(Level 0)">
-            <Droppable droppableId={"priority "+priorityData[1].skillName} key={priorityData[1].skillName}>
-              {(provided, snapshot) => {
-                return (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    style={priorityBlockStyles}
-                  >
-                    {priorityData[1].skill.map((item, index) => (
-                      <Draggable
-                        key={item.value}
-                        draggableId={`${item.value} ${item.name}`}
-                        index={index}
-                      >
-                        {(provided, snapshot) => {
-                          return (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <PriorityCard
-                                key={item.value}
-                                skill={item}
-                                index={1}
-                                handleDelete={handleUpdate}
-                                customStyle={getSkillStyles(item.name)}
-                              />
-                            </div>
-                          );
-                        }}
-                      </Draggable>
-                    ))}
-                  </div>
-                );
-              }}
-            </Droppable>
-          </PriorityComponent>
+                )}
+              </Droppable>
+            </PriorityComponent>
+          ))}
         </div>
       </CustomizableComponent>
     </div>
