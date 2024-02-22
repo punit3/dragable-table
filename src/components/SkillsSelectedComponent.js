@@ -1,23 +1,25 @@
 import React from "react";
 import CustomizableComponent from "./CustomizableComponent";
-import CustomizableContentComponent from "./CutomizableContentComponent";
+import CustomizableContentComponent from "./CutomizableContentComponent"; 
 import SkillCard from "./SkillCard";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import {  Droppable, Draggable } from "react-beautiful-dnd";
 import { getSkillStyles } from "../utils.js/styleGenerator";
 
+// Styles for the inner block
 const innerBlockStyles = {
-  width: "100%", // Adjusted to full width
-  height: "100%", // Adjusted to full height
+  width: "100%",
+  height: "100%",
   padding: "12px",
   borderRadius: "8px",
   display: "flex",
   gap: "8px",
   background: "white",
-  boxSizing: "border-box", // Added to include padding and border in the element's total width and height
+  boxSizing: "border-box",
   flexWrap: "wrap",
   alignContent: "baseline",
 };
 
+// Define categories for skills
 const skillCategories = [
   { id: 0, name: "Core", height: "256px" },
   { id: 1, name: "Special", height: "112px" },
@@ -27,15 +29,17 @@ const skillCategories = [
 const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
   return (
     <div className="inner-middle-container">
+      {/* Container for customizable component */}
       <CustomizableComponent headerText="Skills Selected">
         <div className="inner-middle-container-body">
+          {/* Loop through skill categories */}
           {skillCategories.map((category) => (
             <CustomizableContentComponent
               key={category.id}
-              // customStyle={{ height: category.height }}
               headerText={category.name}
               level="(Level 0)"
             >
+              {/* Droppable area for each skill category */}
               <Droppable droppableId={`skills ${category.name}`} key={category.id}>
                 {(provided, snapshot) => (
                   <div
@@ -46,6 +50,7 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
                       height: category.height,
                     }}
                   >
+                    {/* Loop through skills in the current category */}
                     {skillData[category.id].skill.map((item, index) => (
                       <Draggable
                         key={item.value}
@@ -58,11 +63,11 @@ const SkillsSelectedComponent = ({ skillData, updateSkillData }) => {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
+                            {/* SkillCard component for each skill */}
                             <SkillCard
                               key={item.value}
                               skill={item.value}
                               customStyle={getSkillStyles(item.name)}
-                              style={{ boxSizing: "border-box" }} // Added to include padding and border in the element's total width and height
                             />
                           </div>
                         )}

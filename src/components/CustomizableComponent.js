@@ -13,7 +13,7 @@ const CustomizableComponent = ({ headerText, customStyle, children }) => {
     borderWidth: " 1px, 1px, 0px, 1px",
     color: "white",
     borderStyle: "solid",
-    fontFamily: " Poppins",
+    fontFamily: "Poppins",
     fontSize: "22px",
     fontWeight: "600",
     lineHeight: "33px",

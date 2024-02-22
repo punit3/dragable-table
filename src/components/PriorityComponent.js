@@ -19,7 +19,7 @@ const PriorityComponent = ({ headerText, customStyle, children }) => {
 
     color: "#676565",
 
-    fontFamily: " Poppins",
+    fontFamily: "Poppins",
     fontSize: "18px",
     fontWeight: "700",
     lineHeight: "33px",

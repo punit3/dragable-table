@@ -5,12 +5,14 @@ import PriorityCard from "./PriorityCard";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { getSkillStyles } from "../utils.js/styleGenerator";
 
+// React component for setting skill priority
 const SetSkillPriorityComponent = ({
   priorityData,
   skillData,
   updatePriorityData,
   updateSkillData,
 }) => {
+  // Styles for the priority block
   const priorityBlockStyles = {
     background: "white",
     display: "flex",
@@ -19,27 +21,55 @@ const SetSkillPriorityComponent = ({
     flexDirection: "column",
     gap: "12px",
   };
-
+  // Function to handle updates when a card is clicked on close btn
   const handleUpdate = (value, indexToUpdate) => {
-    const updatedSkillData = skillData.map((item) => (
+    // Check for duplicacy in skillData
+    const isDuplicateInSkillData = skillData.some((item) => {
+      const duplicateFound = item.skill.some(
+        (skillItem) => JSON.stringify(skillItem) === JSON.stringify(value)
+      );
+      return duplicateFound;
+    });
+
+    // Check for duplicacy in priorityData
+    const isDuplicateInPriorityData = priorityData.some(
+      (item) => JSON.stringify(item.skill) === JSON.stringify(value)
+    );
+
+    if (isDuplicateInSkillData) {
+      
+      return;
+    }
+
+    // Update the skill data
+    const updatedSkillData = skillData.map((item) =>
       item.skillName === value.name
         ? { ...item, skill: [...item.skill, value] }
         : { ...item }
-    ));
+    );
 
-    const updatedPriorityData = priorityData.map((item, index) => (
-      index === indexToUpdate
-        ? { ...item, skill: item.skill.filter((x) => x.value !== value.value) }
-        : item
-    ));
+    // Remove the item from priorityData if present
+    const updatedPriorityData = priorityData.map((item) => {
+      const updatedItem = {
+        ...item,
+        skill: item.skill.filter(
+          (x) => JSON.stringify(x) !== JSON.stringify(value)
+        ),
+      };
+      return updatedItem;
+    });
 
+   
     updateSkillData([...updatedSkillData]);
     updatePriorityData([...updatedPriorityData]);
   };
 
   return (
+    // Container for the Set Skill Priority component
     <div className="inner-right-container">
+      {/* Customizable component with the header "Set Skill Priority" */}
       <CustomizableComponent headerText="Set Skill Priority">
+        {/* Body of the component */}
         <div className="inner-right-container-body">
           {/* Loop through priorityData to render PriorityComponents */}
           {priorityData.map((priority, index) => (
@@ -48,11 +78,13 @@ const SetSkillPriorityComponent = ({
               headerText={priority.skillName}
               level="(Level 0)"
             >
+              {/* Droppable area for each skill category */}
               <Droppable
                 droppableId={`priority ${priority.skillName}`}
                 key={priority.skillName}
               >
                 {(provided, snapshot) => (
+                  // Priority block styles for the Droppable area
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
@@ -66,11 +98,13 @@ const SetSkillPriorityComponent = ({
                         index={itemIndex}
                       >
                         {(provided, snapshot) => (
+                          // Individual PriorityCard with drag-and-drop capabilities
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
+                            {/* PriorityCard component */}
                             <PriorityCard
                               key={item.value}
                               skill={item}
